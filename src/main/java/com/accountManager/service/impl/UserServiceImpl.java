@@ -26,4 +26,26 @@ public class UserServiceImpl implements UserService {
 		return userdao.findOne(id);
 	}
 
+	@Override
+	public User createUser(User user) {
+		if(user.getId()!=null){
+			return null;
+		}
+		return userdao.save(user);
+	}
+
+	@Override
+	public User updateUser(User user) {
+		User userExists = userdao.findOne(user.getId());
+		if(userExists==null){
+			return null;
+		}
+		return userdao.save(user);
+	}
+
+	@Override
+	public void removeUser(Long id) {
+		userdao.delete(id);
+	}
+
 }
