@@ -2,6 +2,8 @@ package com.accountManager.controller;
 
 import java.util.List;
 
+import com.accountManager.model.User_Account;
+import com.accountManager.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +23,14 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-		
+
+	@Autowired
+	private UserAccountService userAccountService;
+
+	@GetMapping("/")
+	public void SayHi(){
+		System.out.println("Hello");
+	}
 	@GetMapping("/account")
 	public List<User> getAllUsersDetails(){
 		return userService.fetchAll();
@@ -49,4 +58,18 @@ public class UserController {
 		userService.removeUser(id);
 	}
 
+	@GetMapping("/account/getAllUserBalance")
+	public List<User_Account> getAllUserBalances(){
+		return userAccountService.findAll();
+	}
+
+	@GetMapping("/account/getBalance/{user_id}")
+	public User_Account viewBalance(@PathVariable("user_id") Long user_id){
+		return userAccountService.fetchBalance(user_id);
+	}
+
+	@PostMapping("/account/transferFund/sourceId/{1}/destinationId/{user_id}")
+	public User_Account transferFund(@PathVariable("user_id")Long user_id){
+		return userAccountService.transferFund(user_id);
+	}
 }
